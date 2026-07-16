@@ -40,6 +40,14 @@ async def proxy_gateway(path: str, request: Request):
                     timeout=5.0  # 5 second timeout limit per attempt
                 )
 
+            if external_response.status_code == 429:
+                retry_after = external_response.headers.get("Retry-After")
+                wait_time = float(retry_after) if retry_after and retry_after.isdigit() else 2.0
+                
+                print(f"[Rate Limited 429] Target API requested a pause. Waiting {wait_time}s...")
+                await asyncio.sleep(wait_time)
+                continue
+
             if external_response.status_code >= 500:
                 raise httpx.HTTPStatusError(
                     f"Server Error {external_response.status_code}", 
