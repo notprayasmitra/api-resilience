@@ -1,4 +1,6 @@
-# What the project is about?
+# API Resilience
+
+### What the project is about?
 
 In production software, apps constantly talk to external services (like payment gateways, mapping APIs, or authentication tools). However, networks are unpredictable, and external servers can crash or get overloaded.
 
